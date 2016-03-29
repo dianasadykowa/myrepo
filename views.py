@@ -39,6 +39,7 @@ def download(request, file_type):
     
 def download_as_attachment(request, file_type, file_name):
     return excel.make_response_from_array(data, file_type, file_name=file_name)
+    array.save_to_database()
 
 
 def import_sheet(request):
@@ -72,15 +73,7 @@ def parse(request, data_struct_type):
     if form.is_valid():
         filehandle = request.FILES['file']
         if data_struct_type == "array":
-            return JsonResponse({"result": filehandle.get_array()})
-        elif data_struct_type == "dict":
-            return JsonResponse(filehandle.get_dict())
-        elif data_struct_type == "records":
-            return JsonResponse({"result": filehandle.get_records()})
-        elif data_struct_type == "book":
-            return JsonResponse(filehandle.get_book().to_dict())
-        elif data_struct_type == "book_dict":
-            return JsonResponse(filehandle.get_book_dict())
+            return JsonResponse({"result": filehandle.get_array()})  
         else:
             return HttpResponseBadRequest()
     else:
